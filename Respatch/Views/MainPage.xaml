@@ -1,0 +1,192 @@
+<Page
+    x:Class="Respatch.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Respatch.Controls"
+    xmlns:converters="using:Respatch.Converters"
+    xmlns:services="using:Respatch.Services"
+    Background="Transparent">
+
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+        <converters:LoadLevelToColorConverter x:Key="LoadLevelToColor" />
+    </Page.Resources>
+
+    <NavigationView
+        x:Name="NavView"
+        PaneDisplayMode="Left"
+        IsBackButtonVisible="Collapsed"
+        IsSettingsVisible="False"
+        OpenPaneLength="280">
+
+        <!-- Header with project name + refresh + settings buttons -->
+        <NavigationView.Header>
+            <Grid Padding="8,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    Text="{x:Bind ViewModel.ActiveProjectName, Mode=OneWay}"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    VerticalAlignment="Center" />
+                <Button
+                    Grid.Column="1"
+                    x:Uid="RefreshButton"
+                    Command="{x:Bind ViewModel.RefreshCommand}"
+                    Margin="4,0"
+                    Style="{StaticResource DefaultButtonStyle}">
+                    <FontIcon Glyph="&#xE72C;" FontSize="14" />
+                </Button>
+                <Button
+                    Grid.Column="2"
+                    x:Uid="SettingsButton"
+                    Command="{x:Bind ViewModel.OpenSettingsCommand}"
+                    Style="{StaticResource DefaultButtonStyle}">
+                    <FontIcon Glyph="&#xE713;" FontSize="14" />
+                </Button>
+            </Grid>
+        </NavigationView.Header>
+
+        <!-- Sidebar menu items: Dashboard + Transports -->
+        <NavigationView.MenuItems>
+            <NavigationViewItem x:Uid="DashboardNavItem" Icon="Home" Tag="Dashboard" />
+        </NavigationView.MenuItems>
+
+        <!-- Sidebar footer: transport list -->
+        <NavigationView.FooterMenuItems>
+            <NavigationViewItemSeparator />
+        </NavigationView.FooterMenuItems>
+
+        <!-- Pane custom content: transport list -->
+        <NavigationView.PaneCustomContent>
+            <ItemsRepeater ItemsSource="{x:Bind ViewModel.Transports, Mode=OneWay}" Margin="4,0">
+                <ItemsRepeater.Layout>
+                    <StackLayout Spacing="2" />
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate x:DataType="services:TransportInfo">
+                        <StackPanel Padding="12,8" Spacing="4">
+                            <TextBlock Text="{x:Bind Name}" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <controls:NumericBadge Count="{x:Bind BusyWorkers}" BadgeStyle="Busy" />
+                                <controls:NumericBadge Count="{x:Bind IdleWorkers}" BadgeStyle="Idle" />
+                                <TextBlock
+                                    Text="{x:Bind MemoryMb}"
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                            <ProgressBar
+                                Value="{x:Bind LoadFraction}"
+                                Maximum="1.0"
+                                Height="3"
+                                Foreground="{x:Bind LoadFraction, Converter={StaticResource LoadLevelToColor}}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </NavigationView.PaneCustomContent>
+
+        <!-- Main content area -->
+        <ScrollViewer Padding="16">
+            <StackPanel Spacing="24">
+
+                <!-- Error InfoBar -->
+                <InfoBar
+                    IsOpen="{x:Bind ViewModel.HasError, Mode=OneWay}"
+                    Severity="Error"
+                    Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                    IsClosable="True" />
+
+                <!-- Loading indicator -->
+                <ProgressRing
+                    IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                    HorizontalAlignment="Center" />
+
+                <!-- Failed Messages -->
+                <StackPanel Spacing="8">
+                    <TextBlock x:Uid="FailedMessagesHeader" Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock
+                        x:Uid="NoFailedMessages"
+                        Style="{StaticResource BodyTextBlockStyle}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Visibility="{x:Bind ViewModel.FailedMessages.Count, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=Invert}" />
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.FailedMessages, Mode=OneWay}">
+                        <ItemsRepeater.Layout>
+                            <StackLayout Spacing="4" />
+                        </ItemsRepeater.Layout>
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="services:ProcessedMessageSummary">
+                                <Border
+                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    CornerRadius="8"
+                                    Padding="12,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Spacing="2">
+                                            <TextBlock Text="{x:Bind MessageClass}" Style="{StaticResource BodyStrongTextBlockStyle}" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Text="{x:Bind Transport}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                            <TextBlock Text="{x:Bind HandledAt}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                        </StackPanel>
+                                        <Button
+                                            Grid.Column="1"
+                                            x:Uid="RetryMessageButton"
+                                            Style="{StaticResource AccentButtonStyle}"
+                                            CommandParameter="{x:Bind}"
+                                            VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </StackPanel>
+
+                <!-- Recent Messages -->
+                <StackPanel Spacing="8">
+                    <TextBlock x:Uid="RecentMessagesHeader" Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock
+                        x:Uid="NoRecentMessages"
+                        Style="{StaticResource BodyTextBlockStyle}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Visibility="{x:Bind ViewModel.RecentMessages.Count, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=Invert}" />
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.RecentMessages, Mode=OneWay}">
+                        <ItemsRepeater.Layout>
+                            <StackLayout Spacing="4" />
+                        </ItemsRepeater.Layout>
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="services:ProcessedMessageSummary">
+                                <Border
+                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    CornerRadius="8"
+                                    Padding="12,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Spacing="2">
+                                            <TextBlock Text="{x:Bind MessageClass}" Style="{StaticResource BodyStrongTextBlockStyle}" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Text="{x:Bind Transport}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                            <TextBlock Text="{x:Bind HandledAt}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                        </StackPanel>
+                                        <Button
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center">
+                                            <FontIcon Glyph="&#xE76C;" FontSize="14" />
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+    </NavigationView>
+</Page>

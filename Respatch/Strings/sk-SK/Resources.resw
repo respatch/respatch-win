@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+
+  <!-- Welcome Page -->
+  <data name="WelcomeTitle.Text" xml:space="preserve"><value>Respatch</value></data>
+  <data name="WelcomeSubtitle.Text" xml:space="preserve"><value>Monitor frontov Symfony Messenger</value></data>
+  <data name="WelcomeDescription.Text" xml:space="preserve"><value>Zatiaľ nie je nakonfigurovaný žiadny projekt. Pridajte prvý projekt a začnite monitorovať.</value></data>
+  <data name="AddProjectButton.Content" xml:space="preserve"><value>Pridať projekt</value></data>
+
+  <!-- Add Project Dialog -->
+  <data name="AddProjectDialog.Title" xml:space="preserve"><value>Pridať projekt</value></data>
+  <data name="ProjectNameLabel.Text" xml:space="preserve"><value>Názov</value></data>
+  <data name="ProjectUrlLabel.Text" xml:space="preserve"><value>URL</value></data>
+  <data name="ProjectTokenLabel.Text" xml:space="preserve"><value>API Token</value></data>
+  <data name="VerifyButton.Content" xml:space="preserve"><value>Overiť</value></data>
+  <data name="VerifyingButton.Content" xml:space="preserve"><value>Overujem…</value></data>
+  <data name="SaveButton.Content" xml:space="preserve"><value>Uložiť</value></data>
+  <data name="RetryButton.Content" xml:space="preserve"><value>Skúsiť znova</value></data>
+  <data name="CancelButton.Content" xml:space="preserve"><value>Zrušiť</value></data>
+
+  <!-- Main Page -->
+  <data name="DashboardNavItem.Content" xml:space="preserve"><value>Prehľad</value></data>
+  <data name="FailedMessagesHeader.Text" xml:space="preserve"><value>Zlyhané správy</value></data>
+  <data name="RecentMessagesHeader.Text" xml:space="preserve"><value>Nedávno spracované</value></data>
+  <data name="RetryMessageButton.Content" xml:space="preserve"><value>Zopakovať</value></data>
+  <data name="NoFailedMessages.Text" xml:space="preserve"><value>Žiadne zlyhané správy</value></data>
+  <data name="NoRecentMessages.Text" xml:space="preserve"><value>Žiadne nedávne správy</value></data>
+  <data name="RefreshButton.Content" xml:space="preserve"><value>Obnoviť</value></data>
+  <data name="SettingsButton.Content" xml:space="preserve"><value>Nastavenia</value></data>
+
+  <!-- Settings Page -->
+  <data name="SettingsTitle.Text" xml:space="preserve"><value>Nastavenia</value></data>
+  <data name="DiagnosticsGroup.Header" xml:space="preserve"><value>Diagnostika</value></data>
+  <data name="LoggingEnabledToggle.Header" xml:space="preserve"><value>Povoliť logovanie</value></data>
+  <data name="LogToFileToggle.Header" xml:space="preserve"><value>Logovať do súboru</value></data>
+  <data name="LogFilePathLabel.Text" xml:space="preserve"><value>Cesta k log súboru</value></data>
+  <data name="CloseButton.Content" xml:space="preserve"><value>Zavrieť</value></data>
+
+  <!-- Worker badges -->
+  <data name="BusyWorkers.Label" xml:space="preserve"><value>Zaneprázdnení</value></data>
+  <data name="IdleWorkers.Label" xml:space="preserve"><value>Voľní</value></data>
+</root>
