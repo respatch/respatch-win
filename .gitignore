@@ -1,0 +1,41 @@
+# .gitignore for .NET and WinUI 3
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Xx]64/
+[Xx]86/
+[Aa][Rr][Mm]64/
+[Dd]ebug/
+[Rr]elease/
+
+# Symbol files
+*.pdb
+
+# Local settings
+*.local.json
+
+# Specialized files
+[Pp]ackages/
+/TestResults/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Windows App SDK / WinUI 3 generated files
+AppPackages/
+BundleArtifacts/
+Generated Files/
+
+# OS generated files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Respatch.Tests (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Respatch.Tests (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
